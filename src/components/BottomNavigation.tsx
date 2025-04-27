@@ -1,6 +1,6 @@
 import React from 'react';
-import { Home, ClipboardList, User, ShoppingCart, UtensilsCrossed, Salad, Drumstick } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Home, ClipboardList, User, ShoppingCart, UtensilsCrossed, Salad, Drumstick, LayoutDashboard } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useStore from '../store';
 import { DietaryFilter } from '../types';
 
@@ -13,7 +13,8 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   onOrderHistoryClick
 }) => {
   const navigate = useNavigate();
-  const { cart, dietaryFilter, setDietaryFilter } = useStore();
+  const location = useLocation();
+  const { cart, dietaryFilter, setDietaryFilter, isLoggedIn } = useStore();
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const DietaryIcon = {
@@ -38,8 +39,13 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg safe-area-bottom z-50">
       <div className="max-w-lg mx-auto">
-        <nav className="grid grid-cols-5 gap-1">
-          <button className="flex flex-col items-center justify-center py-3 text-indigo-600">
+        <nav className="grid grid-cols-6 gap-1">
+          <button 
+            onClick={() => navigate('/customer')}
+            className={`flex flex-col items-center justify-center py-3 ${
+              location.pathname === '/customer' ? 'text-indigo-600' : 'text-gray-600'
+            }`}
+          >
             <Home className="w-6 h-6" />
             <span className="text-xs mt-1">Home</span>
           </button>
@@ -72,6 +78,18 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             <ClipboardList className="w-6 h-6" />
             <span className="text-xs mt-1">Orders</span>
           </button>
+
+          {isLoggedIn && (
+            <button 
+              onClick={() => navigate('/dashboard')}
+              className={`flex flex-col items-center justify-center py-3 ${
+                location.pathname === '/dashboard' ? 'text-indigo-600' : 'text-gray-600'
+              }`}
+            >
+              <LayoutDashboard className="w-6 h-6" />
+              <span className="text-xs mt-1">Dashboard</span>
+            </button>
+          )}
           
           <button 
             className="flex flex-col items-center justify-center py-3 text-gray-600"

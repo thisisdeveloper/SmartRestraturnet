@@ -61,7 +61,7 @@ const AuthPage: React.FC = () => {
             >
               <User className="w-6 h-6 mr-3" />
               <div className="text-left">
-                <div className="font-semibold">Staff Login</div>
+                <div className="font-semibold">Kitchen Staff Login</div>
                 <div className="text-sm opacity-90">Kitchen and support</div>
               </div>
             </button>

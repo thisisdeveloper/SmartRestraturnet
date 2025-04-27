@@ -3,6 +3,7 @@ export type CategoryType = 'Veg' | 'NonVeg' | 'Drink';
 export type DietaryFilter = 'all' | 'veg' | 'nonveg';
 export type VenueType = 'restaurant' | 'foodCourt';
 export type TableType = 'private' | 'shared';
+export type UserRole = 'admin' | 'waiter' | 'staff';
 
 export interface Review {
   id: string;
@@ -120,8 +121,9 @@ export interface AppState {
   dietaryFilter: DietaryFilter;
   selectedMenuItem: MenuItem | null;
   isLoggedIn: boolean;
+  userRole: UserRole | null;
   
-  login: (role: 'admin' | 'waiter' | 'staff') => void;
+  login: (role: UserRole) => void;
   logout: () => void;
   setCurrentRestaurant: (restaurant: Restaurant) => void;
   setCurrentTable: (table: Table) => void;

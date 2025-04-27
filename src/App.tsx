@@ -15,6 +15,7 @@ import NotificationsPage from './pages/NotificationsPage';
 import AuthPage from './pages/AuthPage';
 import SearchPage from './pages/SearchPage';
 import CartPage from './pages/CartPage';
+import DashboardPage from './pages/DashboardPage';
 import './index.css';
 
 function App() {
@@ -29,7 +30,8 @@ function App() {
           <Route path="/" element={<Navigate to="/auth" replace />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/dashboard" element={<CustomerView />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/customer" element={<CustomerView />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/account" element={<AccountPage />} />

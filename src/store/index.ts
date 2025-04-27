@@ -7,7 +7,8 @@ import {
   CartItem, 
   Order, 
   Notification,
-  DietaryFilter
+  DietaryFilter,
+  UserRole
 } from '../types';
 import { mockRestaurant } from '../data/mockData';
 
@@ -22,11 +23,13 @@ const useStore = create<AppState>((set) => ({
   dietaryFilter: 'all',
   selectedMenuItem: null,
   isLoggedIn: false,
+  userRole: null,
 
-  login: (role: 'admin' | 'waiter' | 'staff') => set((state) => {
+  login: (role: UserRole) => set((state) => {
     // For demo purposes, set mock data
     return {
       isLoggedIn: true,
+      userRole: role,
       currentRestaurant: mockRestaurant,
       currentTable: mockRestaurant.tables[0],
     };
@@ -34,6 +37,7 @@ const useStore = create<AppState>((set) => ({
 
   logout: () => set({
     isLoggedIn: false,
+    userRole: null,
     currentRestaurant: null,
     currentTable: null,
     cart: [],
