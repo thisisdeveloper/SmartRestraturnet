@@ -1,6 +1,5 @@
-import React, { useState, lazy, Suspense, useEffect } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QRScanner from '../components/QRScanner';
 import Header from '../components/Header';
 import PromotionalBanner from '../components/PromotionalBanner';
 import BottomNavigation from '../components/BottomNavigation';
@@ -28,12 +27,12 @@ const CustomerView: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   
   const { 
-    currentRestaurant, 
+    currentRestaurant,
     currentTable,
     dietaryFilter
   } = useStore();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
     };
@@ -42,8 +41,7 @@ const CustomerView: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Reset selected tag when dietary filter changes
-  useEffect(() => {
+  React.useEffect(() => {
     setSelectedTag(null);
   }, [dietaryFilter]);
 
@@ -101,11 +99,6 @@ const CustomerView: React.FC = () => {
     navigate('/orders');
   };
   
-  // If restaurant is not set, show QR scanner
-  if (!currentRestaurant || !currentTable) {
-    return <QRScanner />;
-  }
-  
   // Get all subcategories for each category
   const subCategoriesByCategory: Record<CategoryType, string[]> = {
     'Veg': [],
@@ -114,7 +107,7 @@ const CustomerView: React.FC = () => {
   };
   
   // Populate subcategories
-  currentRestaurant.menu.forEach((item) => {
+  currentRestaurant?.menu.forEach((item) => {
     if (!subCategoriesByCategory[item.category].includes(item.subCategory)) {
       subCategoriesByCategory[item.category].push(item.subCategory);
     }
@@ -142,6 +135,11 @@ const CustomerView: React.FC = () => {
     'Drink': filteredMenu.filter(item => item.category === 'Drink')
   };
 
+  if (!currentRestaurant || !currentTable) {
+    navigate('/auth');
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-[calc(4rem+env(safe-area-inset-bottom))]">
       <Header 
@@ -151,7 +149,6 @@ const CustomerView: React.FC = () => {
       />
       
       <main className="max-w-7xl mx-auto py-6 px-4">
-        {/* Promotional Banner */}
         <PromotionalBanner />
         
         {/* Search Bar */}

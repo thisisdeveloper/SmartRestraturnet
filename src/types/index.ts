@@ -1,3 +1,4 @@
+import { create } from 'zustand';
 export type CategoryType = 'Veg' | 'NonVeg' | 'Drink';
 export type DietaryFilter = 'all' | 'veg' | 'nonveg';
 export type VenueType = 'restaurant' | 'foodCourt';
@@ -120,6 +121,8 @@ export interface AppState {
   selectedMenuItem: MenuItem | null;
   isLoggedIn: boolean;
   
+  login: (role: 'admin' | 'waiter' | 'staff') => void;
+  logout: () => void;
   setCurrentRestaurant: (restaurant: Restaurant) => void;
   setCurrentTable: (table: Table) => void;
   setDietaryFilter: (filter: DietaryFilter) => void;

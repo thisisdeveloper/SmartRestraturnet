@@ -9,6 +9,7 @@ import {
   Notification,
   DietaryFilter
 } from '../types';
+import { mockRestaurant } from '../data/mockData';
 
 const useStore = create<AppState>((set) => ({
   currentRestaurant: null,
@@ -21,6 +22,25 @@ const useStore = create<AppState>((set) => ({
   dietaryFilter: 'all',
   selectedMenuItem: null,
   isLoggedIn: false,
+
+  login: (role: 'admin' | 'waiter' | 'staff') => set((state) => {
+    // For demo purposes, set mock data
+    return {
+      isLoggedIn: true,
+      currentRestaurant: mockRestaurant,
+      currentTable: mockRestaurant.tables[0],
+    };
+  }),
+
+  logout: () => set({
+    isLoggedIn: false,
+    currentRestaurant: null,
+    currentTable: null,
+    cart: [],
+    orders: [],
+    currentOrder: null,
+    notifications: [],
+  }),
 
   setCurrentRestaurant: (restaurant: Restaurant) => set({ currentRestaurant: restaurant }),
   
@@ -65,7 +85,7 @@ const useStore = create<AppState>((set) => ({
         const updatedCart = [...state.cart];
         updatedCart[existingItemIndex] = {
           ...updatedCart[existingItemIndex],
-          quantity, // Replace the quantity instead of adding
+          quantity,
           specialInstructions: specialInstructions || updatedCart[existingItemIndex].specialInstructions
         };
         return { cart: updatedCart };
