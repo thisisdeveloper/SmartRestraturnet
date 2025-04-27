@@ -1,8 +1,7 @@
 import React from 'react';
-import { Home, ClipboardList, User, ShoppingCart, UtensilsCrossed, Salad, Drumstick, LayoutDashboard } from 'lucide-react';
+import { Home, ClipboardList, User, ShoppingCart, LayoutDashboard } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useStore from '../store';
-import { DietaryFilter } from '../types';
 
 interface BottomNavigationProps {
   onOrderHistoryClick: () => void;
@@ -14,40 +13,31 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { cart, dietaryFilter, setDietaryFilter, isLoggedIn } = useStore();
+  const { cart, isLoggedIn } = useStore();
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
-
-  const DietaryIcon = {
-    all: UtensilsCrossed,
-    veg: Salad,
-    nonveg: Drumstick
-  }[dietaryFilter];
-
-  const dietaryFilterStyles: Record<DietaryFilter, string> = {
-    all: 'text-gray-600',
-    veg: 'text-green-600',
-    nonveg: 'text-red-600'
-  };
-
-  const cycleFilter = () => {
-    const filters: DietaryFilter[] = ['all', 'veg', 'nonveg'];
-    const currentIndex = filters.indexOf(dietaryFilter);
-    const nextIndex = (currentIndex + 1) % filters.length;
-    setDietaryFilter(filters[nextIndex]);
-  };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg safe-area-bottom z-50">
       <div className="max-w-lg mx-auto">
-        <nav className="grid grid-cols-6 gap-1">
+        <nav className="grid grid-cols-5 gap-1">
           <button 
-            onClick={() => navigate('/customer')}
+            onClick={() => navigate('/')}
             className={`flex flex-col items-center justify-center py-3 ${
-              location.pathname === '/customer' ? 'text-indigo-600' : 'text-gray-600'
+              location.pathname === '/' ? 'text-indigo-600' : 'text-gray-600'
+            }`}
+          >
+            <LayoutDashboard className="w-6 h-6" />
+            <span className="text-xs mt-1">Dashboard</span>
+          </button>
+          
+          <button 
+            onClick={() => navigate('/booking')}
+            className={`flex flex-col items-center justify-center py-3 ${
+              location.pathname === '/booking' ? 'text-indigo-600' : 'text-gray-600'
             }`}
           >
             <Home className="w-6 h-6" />
-            <span className="text-xs mt-1">Home</span>
+            <span className="text-xs mt-1">Booking</span>
           </button>
           
           <button 
@@ -63,14 +53,6 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             )}
           </button>
           
-          <button
-            onClick={cycleFilter}
-            className={`flex flex-col items-center justify-center py-3 ${dietaryFilterStyles[dietaryFilter]}`}
-          >
-            <DietaryIcon className="w-6 h-6" />
-            <span className="text-xs mt-1 capitalize">{dietaryFilter === 'all' ? 'All' : dietaryFilter}</span>
-          </button>
-          
           <button 
             className="flex flex-col items-center justify-center py-3 text-gray-600"
             onClick={onOrderHistoryClick}
@@ -78,18 +60,6 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             <ClipboardList className="w-6 h-6" />
             <span className="text-xs mt-1">Orders</span>
           </button>
-
-          {isLoggedIn && (
-            <button 
-              onClick={() => navigate('/dashboard')}
-              className={`flex flex-col items-center justify-center py-3 ${
-                location.pathname === '/dashboard' ? 'text-indigo-600' : 'text-gray-600'
-              }`}
-            >
-              <LayoutDashboard className="w-6 h-6" />
-              <span className="text-xs mt-1">Dashboard</span>
-            </button>
-          )}
           
           <button 
             className="flex flex-col items-center justify-center py-3 text-gray-600"

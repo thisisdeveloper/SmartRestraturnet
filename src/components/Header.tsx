@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Bell, List, Map, ClipboardCheck, ChevronDown, Lock, Unlock } from 'lucide-react';
 import useStore from '../store';
 import { DietaryFilter, Stall } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   onNotificationsClick: () => void;
@@ -14,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({
   onOrderStatusClick,
   onRestaurantClick
 }) => {
+  const navigate = useNavigate();
   const { 
     currentRestaurant, 
     currentTable,
@@ -22,7 +24,8 @@ const Header: React.FC<HeaderProps> = ({
     setCurrentStall,
     setCurrentTable,
     lockTable,
-    unlockTable
+    unlockTable,
+    isLoggedIn
   } = useStore();
   
   const [showStallDropdown, setShowStallDropdown] = useState(false);
@@ -93,6 +96,14 @@ const Header: React.FC<HeaderProps> = ({
       unlockTable(tableId);
     } else {
       lockTable(tableId);
+    }
+  };
+
+  const handleBack = () => {
+    if (isLoggedIn) {
+      navigate(-1);
+    } else {
+      navigate('/auth');
     }
   };
 

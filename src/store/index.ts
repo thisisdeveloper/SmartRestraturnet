@@ -25,15 +25,16 @@ const useStore = create<AppState>((set) => ({
   isLoggedIn: false,
   userRole: null,
 
-  login: (role: UserRole) => set((state) => {
-    // For demo purposes, set mock data
-    return {
-      isLoggedIn: true,
-      userRole: role,
-      currentRestaurant: mockRestaurant,
-      currentTable: mockRestaurant.tables[0],
-    };
-  }),
+  login: (role: UserRole) => set(() => ({
+    isLoggedIn: true,
+    userRole: role,
+    currentRestaurant: mockRestaurant,
+    currentTable: mockRestaurant.tables[0],
+    cart: [],
+    orders: [],
+    currentOrder: null,
+    notifications: []
+  })),
 
   logout: () => set({
     isLoggedIn: false,
